@@ -11,6 +11,7 @@ defmodule ParseTorrent do
 
     torrent
     |> torrent_valid?
+    |> do_parse
   end
 
   defp torrent_valid?(torrent) do
@@ -26,6 +27,22 @@ defmodule ParseTorrent do
     end
 
     torrent
+  end
+
+  defp do_parse(torrent) do
+    %{ info_hash: info_hash(torrent) }
+  end
+
+  defp info_hash(torrent) do
+    torrent["info"]
+    |> Bencodex.encode
+    |> sha1
+    |> Base.encode16
+    |> String.downcase
+  end
+
+  defp sha1(data) do
+    :crypto.hash(:sha, data)
   end
 end
 
