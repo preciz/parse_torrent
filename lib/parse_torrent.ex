@@ -7,10 +7,9 @@ defmodule ParseTorrent do
   """
 
   def parse(file_path) do
-    torrent = File.read!(file_path)
+    torrent = File.read!(file_path) |> Bencodex.decode
 
     torrent
-    |> Bencodex.decode
     |> torrent_valid?
   end
 
