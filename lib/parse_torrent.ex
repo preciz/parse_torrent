@@ -1,4 +1,11 @@
 defmodule ParseTorrent do
+  @moduledoc """
+    Parses a .torrent file and returns a map
+
+    Usage:
+    ParseTorrent.parse("my_path/my_file.torrent")
+  """
+
   def parse(file_path) do
     torrent = File.read!(file_path)
 
