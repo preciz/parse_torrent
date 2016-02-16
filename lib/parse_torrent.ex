@@ -36,7 +36,8 @@ defmodule ParseTorrent do
       announce: announce(torrent),
       files: files(torrent),
       length: sum_length(files(torrent)),
-      piece_length: piece_length(torrent)
+      piece_length: piece_length(torrent),
+      last_piece_length: last_piece_length(torrent)
     }
   end
 
@@ -99,6 +100,19 @@ defmodule ParseTorrent do
   end
 
   defp piece_length(torrent), do: torrent["info"]["piece length"]
+
+  defp last_piece_length(torrent) do
+    last_file = List.last(files(torrent))
+
+    piece_length = piece_length(torrent)
+
+    rem_length = rem((last_file.offset + last_file.length), piece_length)
+
+    case rem_length do
+      0 -> piece_length
+      _ -> rem_length
+    end
+  end
 end
 
 defmodule InvalidTorrentError do
