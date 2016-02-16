@@ -60,7 +60,7 @@ defmodule ParseTorrent do
 
   defp announce(torrent) do
     announce =
-      if torrent["announce-list"] && length(torrent["announce-list"]) > 0 do
+      if is_list(torrent["announce-list"]) do
         List.flatten(torrent["announce-list"])
       else
         [torrent["announce"]]
