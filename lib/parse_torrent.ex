@@ -37,7 +37,8 @@ defmodule ParseTorrent do
       files: files(torrent),
       length: sum_length(files(torrent)),
       piece_length: piece_length(torrent),
-      last_piece_length: last_piece_length(torrent)
+      last_piece_length: last_piece_length(torrent),
+      pieces: pieces(torrent)
     }
   end
 
@@ -113,6 +114,16 @@ defmodule ParseTorrent do
       _ -> rem_length
     end
   end
+
+  defp pieces(torrent) do
+    torrent["info"]["pieces"]
+    |> Base.encode16
+    |> String.split("", trim: true)
+    |> Enum.chunk(40, 40, [])
+    |> Enum.map(&Enum.join/1)
+    |> Enum.map(&String.downcase/1)
+  end
+
 end
 
 defmodule InvalidTorrentError do
