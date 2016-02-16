@@ -30,7 +30,10 @@ defmodule ParseTorrent do
   end
 
   defp do_parse(torrent) do
-    %{ info_hash: info_hash(torrent) }
+    %{
+      info_hash: info_hash(torrent),
+      name: name(torrent)
+    }
   end
 
   defp info_hash(torrent) do
@@ -43,6 +46,10 @@ defmodule ParseTorrent do
 
   defp sha1(data) do
     :crypto.hash(:sha, data)
+  end
+
+  defp name(torrent) do
+    torrent["info"]["name.utf-8"] || torrent["info"]["name"]
   end
 end
 
