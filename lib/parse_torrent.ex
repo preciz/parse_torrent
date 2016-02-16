@@ -32,7 +32,8 @@ defmodule ParseTorrent do
   defp do_parse(torrent) do
     %{
       info_hash: info_hash(torrent),
-      name: name(torrent)
+      name: name(torrent),
+      announce: announce(torrent)
     }
   end
 
@@ -50,6 +51,17 @@ defmodule ParseTorrent do
 
   defp name(torrent) do
     torrent["info"]["name.utf-8"] || torrent["info"]["name"]
+  end
+
+  defp announce(torrent) do
+    announce =
+      if torrent["announce-list"] && length(torrent["announce-list"]) > 0 do
+        List.flatten(torrent["announce-list"])
+      else
+        [torrent["announce"]]
+      end
+
+    Enum.uniq(announce)
   end
 end
 
