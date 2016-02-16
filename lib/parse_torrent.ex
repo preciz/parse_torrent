@@ -35,7 +35,8 @@ defmodule ParseTorrent do
       name: name(torrent),
       announce: announce(torrent),
       files: files(torrent),
-      length: sum_length(files(torrent))
+      length: sum_length(files(torrent)),
+      piece_length: piece_length(torrent)
     }
   end
 
@@ -96,6 +97,8 @@ defmodule ParseTorrent do
     |> Enum.map(&(&1[:length]))
     |> Enum.sum
   end
+
+  defp piece_length(torrent), do: torrent["info"]["piece length"]
 end
 
 defmodule InvalidTorrentError do
