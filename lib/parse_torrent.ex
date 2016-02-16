@@ -34,7 +34,8 @@ defmodule ParseTorrent do
       info_hash: info_hash(torrent),
       name: name(torrent),
       announce: announce(torrent),
-      files: files(torrent)
+      files: files(torrent),
+      length: sum_length(files(torrent))
     }
   end
 
@@ -87,6 +88,12 @@ defmodule ParseTorrent do
     files
     |> Enum.slice(0..(i-1))
     |> Enum.map(&(&1["length"]))
+    |> Enum.sum
+  end
+
+  defp sum_length(files) do
+    files
+    |> Enum.map(&(&1[:length]))
     |> Enum.sum
   end
 end
