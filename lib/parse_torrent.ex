@@ -33,7 +33,8 @@ defmodule ParseTorrent do
     %{
       info_hash: info_hash(torrent),
       name: name(torrent),
-      announce: announce(torrent)
+      announce: announce(torrent),
+      files: files(torrent)
     }
   end
 
@@ -62,6 +63,31 @@ defmodule ParseTorrent do
       end
 
     Enum.uniq(announce)
+  end
+
+  defp files(torrent) do
+    files = torrent["info"]["files"] || [torrent["info"]]
+
+    files
+    |> Enum.with_index
+    |> Enum.map(fn {file, i} ->
+      parts = [name(torrent)| file["path.utf-8"] || file["path"] || []]
+
+      %{
+        path: Enum.reduce(parts, &(&2 <> "/" <> &1)),
+        name: List.last(parts),
+        length: file["length"],
+        offset: offset(files, i)
+      }
+    end)
+  end
+
+  defp offset(_files, 0), do: 0
+  defp offset(files, i) do
+    files
+    |> Enum.slice(0..(i-1))
+    |> Enum.map(&(&1["length"]))
+    |> Enum.sum
   end
 end
 
