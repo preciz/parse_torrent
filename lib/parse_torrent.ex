@@ -36,6 +36,7 @@ defmodule ParseTorrent do
       private: private(torrent),
       created_at: created_at(torrent),
       created_by: created_by(torrent),
+      comment: comment(torrent),
       announce: announce(torrent),
       files: files(torrent),
       length: sum_length(files(torrent)),
@@ -81,6 +82,8 @@ defmodule ParseTorrent do
   defp created_by(torrent) do
     torrent["created by"]
   end
+
+  defp comment(torrent), do: torrent["comment"]
 
   defp announce(torrent) do
     announce =
