@@ -38,6 +38,7 @@ defmodule ParseTorrent do
       created_by: created_by(torrent),
       comment: comment(torrent),
       announce: announce(torrent),
+      url_list: url_list(torrent),
       files: files(torrent),
       length: sum_length(files(torrent)),
       piece_length: piece_length(torrent),
@@ -95,6 +96,14 @@ defmodule ParseTorrent do
 
     Enum.uniq(announce)
   end
+
+
+  defp url_list(torrent) do
+    do_url_list(torrent["url-list"])
+  end
+
+  defp do_url_list(""), do: []
+  defp do_url_list(list), do: Enum.uniq(list) || []
 
   defp files(torrent) do
     files = torrent["info"]["files"] || [torrent["info"]]
