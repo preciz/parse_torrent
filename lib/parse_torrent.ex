@@ -102,8 +102,9 @@ defmodule ParseTorrent do
     do_url_list(torrent["url-list"])
   end
 
+  defp do_url_list(nil), do: []
   defp do_url_list(""), do: []
-  defp do_url_list(list), do: Enum.uniq(list) || []
+  defp do_url_list(list), do: Enum.uniq(list)
 
   defp files(torrent) do
     files = torrent["info"]["files"] || [torrent["info"]]
