@@ -26,4 +26,9 @@ defmodule ParseTorrentTest do
     assert torrent.url_list == []
   end
 
+  test "dedupes announce list" do
+    torrent = ParseTorrent.parse("test/torrents/leaves-duplicate-tracker.torrent")
+
+    assert torrent.announce == ["http://tracker.example.com/announce"]
+  end
 end
