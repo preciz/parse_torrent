@@ -34,6 +34,7 @@ defmodule ParseTorrent do
       info_hash: info_hash(torrent),
       name: name(torrent),
       private: private(torrent),
+      created_at: created_at(torrent),
       announce: announce(torrent),
       files: files(torrent),
       length: sum_length(files(torrent)),
@@ -61,6 +62,14 @@ defmodule ParseTorrent do
 
   defp private(torrent) do
     !!torrent["info"]["private"]
+  end
+
+  defp created_at(torrent) do
+    epoch = {{1970, 1, 1}, {0, 0, 0}} |> :calendar.datetime_to_gregorian_seconds
+
+    torrent["creation date"]
+    |> +(epoch)
+    |> :calendar.gregorian_seconds_to_datetime
   end
 
   defp announce(torrent) do
