@@ -33,6 +33,7 @@ defmodule ParseTorrent do
     %{
       info_hash: info_hash(torrent),
       name: name(torrent),
+      private: private(torrent),
       announce: announce(torrent),
       files: files(torrent),
       length: sum_length(files(torrent)),
@@ -56,6 +57,10 @@ defmodule ParseTorrent do
 
   defp name(torrent) do
     torrent["info"]["name.utf-8"] || torrent["info"]["name"]
+  end
+
+  defp private(torrent) do
+    !!torrent["info"]["private"]
   end
 
   defp announce(torrent) do
