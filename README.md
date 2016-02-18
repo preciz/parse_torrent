@@ -7,7 +7,7 @@ ParseTorrent parses a .torrent file and returns a map
 Add parse_torrent to your list of dependencies in `mix.exs`:
 
     def deps do
-      [{:parse_torrent, "~> 0.0.1"}]
+      [{:parse_torrent, "0.1.0"}]
     end
 
 ## Usage
