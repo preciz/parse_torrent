@@ -88,10 +88,13 @@ defmodule ParseTorrent do
 
   defp announce(torrent) do
     announce =
-      if is_list(torrent["announce-list"]) do
-        List.flatten(torrent["announce-list"])
-      else
-        [torrent["announce"]]
+      cond do
+        is_list(torrent["announce-list"]) ->
+          List.flatten(torrent["announce-list"])
+        torrent["announce"] ->
+          [torrent["announce"]]
+        true ->
+          []
       end
 
     Enum.uniq(announce)
