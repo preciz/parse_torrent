@@ -7,7 +7,7 @@ defmodule ParseTorrent.Mixfile do
 
   def project do
     [app: :parse_torrent,
-     version: "0.0.1",
+     version: "0.1.0",
      elixir: "~> 1.2",
      description: @description,
      build_embedded: Mix.env == :prod,
