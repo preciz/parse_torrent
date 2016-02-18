@@ -1,10 +1,8 @@
 # ParseTorrent
 
-**TODO: Add description**
+ParseTorrent parses a .torrent file and returns a map
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
   1. Add parse_torrent to your list of dependencies in `mix.exs`:
 
@@ -12,9 +10,14 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
           [{:parse_torrent, "~> 0.0.1"}]
         end
 
-  2. Ensure parse_torrent is started before your application:
+## Usage
+  ```
+    ParseTorrent.parse("my_path/my_file.torrent")
+  ```
 
-        def application do
-          [applications: [:parse_torrent]]
-        end
+## Credit
 
+Based on [parse-torrent-file](https://github.com/feross/parse-torrent-file) by [feross](https://github.com/feross).
+
+## License
+ParseTorrent is released into the public domain (see `UNLICENSE`).
