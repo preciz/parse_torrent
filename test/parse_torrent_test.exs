@@ -84,4 +84,10 @@ defmodule ParseTorrentTest do
 
     assert torrent.announce == ["http://tracker.example.com/announce"]
   end
+
+  test "parses url-list for webseed support" do
+    torrent = ParseTorrent.parse("test/torrents/leaves-url-list.torrent")
+
+    assert torrent.url_list == [ "http://www2.hn.psu.edu/faculty/jmanis/whitman/leaves-of-grass6x9.pdf" ]
+  end
 end
