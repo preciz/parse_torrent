@@ -26,7 +26,7 @@ defmodule ParseTorrent.Mixfile do
 
   defp package do
     [
-      contributors: ["Barna Kovacs"],
+      maintainers: ["Barna Kovacs"],
       licenses: ["UNLICENSE"],
       links: %{"GitHub" => "https://github.com/preciz/parse_torrent"}
     ]
