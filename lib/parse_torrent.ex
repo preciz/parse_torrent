@@ -1,11 +1,12 @@
 defmodule ParseTorrent do
-  @moduledoc """
+  @doc """
     Parses a .torrent file and returns a map
 
     Usage:
     ParseTorrent.parse("my_path/my_file.torrent")
-  """
 
+    Will raise if can't read file or torrent is invalid.
+  """
   def parse(file_path) do
     torrent = File.read!(file_path) |> Bencodex.decode
 
