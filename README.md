@@ -4,16 +4,15 @@ ParseTorrent parses a .torrent file and returns a map
 
 ## Installation
 
-  1. Add parse_torrent to your list of dependencies in `mix.exs`:
+Add parse_torrent to your list of dependencies in `mix.exs`:
 
-        def deps do
-          [{:parse_torrent, "~> 0.0.1"}]
-        end
+    def deps do
+      [{:parse_torrent, "~> 0.0.1"}]
+    end
 
 ## Usage
-  ```
     ParseTorrent.parse("my_path/my_file.torrent")
-  ```
+
 
 ## Credit
 
