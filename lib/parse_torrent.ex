@@ -163,7 +163,6 @@ defmodule ParseTorrent do
     |> Enum.map(&Enum.join/1)
     |> Enum.map(&String.downcase/1)
   end
-
 end
 
 defmodule InvalidTorrentError do
