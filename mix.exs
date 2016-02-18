@@ -21,7 +21,11 @@ defmodule ParseTorrent.Mixfile do
   end
 
   defp deps do
-    [{:bencodex, "1.0.0"}]
+    [
+      {:earmark, "0.2.1"},
+      {:bencodex, "1.0.0"},
+      {:ex_doc, "0.11.4", only: [:dev]}
+    ]
   end
 
   defp package do

@@ -1,0 +1,1 @@
+sidebarNodes={"exceptions":[{"id":"InvalidTorrentError","title":"InvalidTorrentError","functions":[{"id":"exception/1","anchor":"exception/1"},{"id":"message/1","anchor":"message/1"}]}],"extras":[{"id":"api-reference","title":"API Reference","headers":[]}],"modules":[{"id":"ParseTorrent","title":"ParseTorrent","functions":[{"id":"parse/1","anchor":"parse/1"}]}],"protocols":[]}
