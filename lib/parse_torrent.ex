@@ -8,7 +8,7 @@ defmodule ParseTorrent do
     Will raise if can't read file or torrent is invalid.
   """
   def parse(file_path) do
-    torrent = File.read!(file_path) |> Bencodex.decode
+    torrent = File.read!(file_path) |> Bencode.decode!
 
     torrent
     |> torrent_valid?
@@ -50,7 +50,7 @@ defmodule ParseTorrent do
 
   defp info_hash(torrent) do
     torrent["info"]
-    |> Bencodex.encode
+    |> Bencode.encode!
     |> sha1
     |> Base.encode16
     |> String.downcase
