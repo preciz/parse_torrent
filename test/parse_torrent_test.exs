@@ -2,23 +2,37 @@ defmodule ParseTorrentTest do
   use ExUnit.Case
   doctest ParseTorrent
 
-  test "raises error when torrent is missing 'name' field" do
+  test "`parse` returns `:error` when torrent is missing 'name' field" do
+    torrent = File.read!("test/torrents/leaves-corrupt.torrent")
+    |> ParseTorrent.parse
+
+    assert :error == torrent
+  end
+
+  test "`parse!` raises error when torrent is missing 'name' field" do
     assert_raise ParseTorrent.Error, fn ->
       File.read!("test/torrents/leaves-corrupt.torrent")
-      |> ParseTorrent.parse
+      |> ParseTorrent.parse!
     end
+  end
+
+  test "`parse` returns tuple with `:ok`" do
+    torrent = File.read!("test/torrents/leaves.torrent")
+    |> ParseTorrent.parse
+
+    assert {:ok, data} = torrent
   end
 
   test "parse torrent with empty announce-list" do
     torrent = File.read!("test/torrents/leaves-empty-announce-list.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     assert(torrent.announce == ["udp://tracker.publicbt.com:80/announce"])
   end
 
   test "parse torrent with no announce-list" do
     torrent = File.read!("test/torrents/bitlove-intro.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     expected = %{
       announce: [
@@ -72,21 +86,21 @@ defmodule ParseTorrentTest do
 
   test "parses empy url-list" do
     torrent = File.read!("test/torrents/leaves-empty-url-list.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     assert torrent.url_list == []
   end
 
   test "dedupes announce list" do
     torrent = File.read!("test/torrents/leaves-duplicate-tracker.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     assert torrent.announce == ["http://tracker.example.com/announce"]
   end
 
   test "parses url-list for webseed support" do
     torrent = File.read!("test/torrents/leaves-url-list.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     assert torrent.url_list == [ "http://www2.hn.psu.edu/faculty/jmanis/whitman/leaves-of-grass6x9.pdf" ]
   end
@@ -140,7 +154,7 @@ defmodule ParseTorrentTest do
     }
 
     torrent = File.read!("test/torrents/leaves.torrent")
-    |> ParseTorrent.parse
+    |> ParseTorrent.parse!
 
     assert torrent == leaves_parsed
   end

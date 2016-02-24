@@ -9,7 +9,16 @@ defmodule ParseTorrent do
 
     Will raise if binary is invalid.
   """
-  def parse(<<"d", _::binary>> = data) do
+
+  def parse(data) do
+    try do
+      {:ok, parse!(data)}
+    rescue
+      e -> :error
+    end
+  end
+
+  def parse!(<<"d", _::binary>> = data) do
     torrent = data |> Bencode.decode!
 
     torrent
