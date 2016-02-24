@@ -1,4 +1,6 @@
 defmodule ParseTorrent do
+  alias ParseTorrent.Error
+
   @doc """
     Parses a .torrent file and returns a map
 
@@ -16,16 +18,20 @@ defmodule ParseTorrent do
   end
 
   defp torrent_valid?(torrent) do
-    import Map, only: [get: 2, fetch!: 2]
+    torrent
+    |> has_key_or_raise!("info")
 
-    try do
-      torrent |> fetch!("info")
-      torrent |> get("info") |> fetch!("name")
-      torrent |> get("info") |> fetch!("piece length")
-      torrent |> get("info") |> fetch!("pieces")
-    rescue
-      _ -> raise(InvalidTorrentError)
-    end
+    torrent |> Map.get("info")
+    |> has_key_or_raise!("name")
+    |> has_key_or_raise!("piece length")
+    |> has_key_or_raise!("pieces")
+
+    torrent
+  end
+
+  defp has_key_or_raise!(torrent, key) do
+    Map.has_key?(torrent, key) ||
+      raise Error, missing_key: key
 
     torrent
   end
@@ -164,8 +170,4 @@ defmodule ParseTorrent do
     |> Enum.map(&Enum.join/1)
     |> Enum.map(&String.downcase/1)
   end
-end
-
-defmodule InvalidTorrentError do
-  defexception message: "Missing key"
 end

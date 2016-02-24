@@ -3,7 +3,7 @@ defmodule ParseTorrentTest do
   doctest ParseTorrent
 
   test "raises error when torrent is missing 'name' field" do
-    assert_raise InvalidTorrentError, fn ->
+    assert_raise ParseTorrent.Error, fn ->
       File.read!("test/torrents/leaves-corrupt.torrent")
       |> ParseTorrent.parse
     end
