@@ -2,12 +2,10 @@ defmodule ParseTorrent do
   alias ParseTorrent.Error
 
   @doc """
-    Parses a .torrent file and returns a map
+    Parses a torrent binary and returns a map.
 
     Usage:
     ParseTorrent.parse(data)
-
-    Will raise if binary is invalid.
   """
 
   def parse(data) do
@@ -17,6 +15,14 @@ defmodule ParseTorrent do
       e -> :error
     end
   end
+
+  @doc """
+    Parses a torrent binary and returns a map.
+    Will raise if binary is invalid.
+
+    Usage:
+    ParseTorrent.parse!(data)
+  """
 
   def parse!(<<"d", _::binary>> = data) do
     torrent = data |> Bencode.decode!
