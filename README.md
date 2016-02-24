@@ -11,7 +11,7 @@ Add parse_torrent to your list of dependencies in `mix.exs`:
     end
 
 ## Usage
-    ParseTorrent.parse("my_path/my_file.torrent")
+    ParseTorrent.parse(data)
 
 
 ## Credit

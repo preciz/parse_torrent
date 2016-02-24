@@ -3,12 +3,12 @@ defmodule ParseTorrent do
     Parses a .torrent file and returns a map
 
     Usage:
-    ParseTorrent.parse("my_path/my_file.torrent")
+    ParseTorrent.parse(data)
 
-    Will raise if can't read file or torrent is invalid.
+    Will raise if binary is invalid.
   """
-  def parse(file_path) do
-    torrent = File.read!(file_path) |> Bencode.decode!
+  def parse(<<"d", _::binary>> = data) do
+    torrent = data |> Bencode.decode!
 
     torrent
     |> torrent_valid?

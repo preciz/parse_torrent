@@ -2,7 +2,7 @@ defmodule ParseTorrent.Mixfile do
   use Mix.Project
 
   @description """
-    Parses a torrent file and returns a map
+    Parses a .torrent file and returns a map
   """
 
   def project do
