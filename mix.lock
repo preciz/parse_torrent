@@ -1,4 +1,4 @@
-%{"bencode": {:hex, :bencode, "0.2.0"},
+%{"bencode": {:hex, :bencode, "0.3.0"},
   "bencodex": {:hex, :bencodex, "1.0.0"},
   "earmark": {:hex, :earmark, "0.2.1"},
   "eqc_ex": {:hex, :eqc_ex, "1.2.4"},
