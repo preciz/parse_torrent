@@ -20,7 +20,7 @@ defmodule ParseTorrentTest do
     torrent = File.read!("test/torrents/leaves.torrent")
     |> ParseTorrent.parse
 
-    assert {:ok, data} = torrent
+    assert {:ok, _} = torrent
   end
 
   test "parse torrent with empty announce-list" do
