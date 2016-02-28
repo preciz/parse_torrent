@@ -1,3 +1,4 @@
+[![Travis](https://img.shields.io/travis/preciz/parse_torrent.svg?style=flat-square)](https://travis-ci.org/preciz/parse_torrent)
 [![Hex version](https://img.shields.io/hexpm/v/parse_torrent.svg "Hex version")](https://hex.pm/packages/parse_torrent)
 # ParseTorrent
 
