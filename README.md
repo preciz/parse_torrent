@@ -1,3 +1,4 @@
+[![Hex version](https://img.shields.io/hexpm/v/parse_torrent.svg "Hex version")](https://hex.pm/packages/parse_torrent)
 # ParseTorrent
 
 ParseTorrent parses a .torrent file and returns a map
