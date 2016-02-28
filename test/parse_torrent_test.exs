@@ -34,7 +34,7 @@ defmodule ParseTorrentTest do
     torrent = File.read!("test/torrents/bitlove-intro.torrent")
     |> ParseTorrent.parse!
 
-    expected = %{
+    expected = %ParseTorrent{
       announce: [
         "http://t.bitlove.org/announce"
       ],
@@ -106,7 +106,7 @@ defmodule ParseTorrentTest do
   end
 
   test "parses single file torrent" do
-    leaves_parsed = %{
+    leaves_parsed = %ParseTorrent{
       info_hash: "d2474e86c95b19b8bcfdb92bc12c9d44667cfa36",
       name: "Leaves of Grass by Walt Whitman.epub",
       created_by: "uTorrent/3300",
