@@ -43,11 +43,12 @@ defmodule ParseTorrent do
   """
 
   def parse!(<<"d", _::binary>> = data) do
-    torrent = data |> Bencode.decode!
+    {torrent, info_hash_sha} =
+      data |> Bencode.decode_with_info_hash!
 
     torrent
     |> torrent_valid?
-    |> do_parse
+    |> do_parse(info_hash_sha)
   end
 
   defp torrent_valid?(torrent) do
@@ -69,10 +70,10 @@ defmodule ParseTorrent do
     torrent
   end
 
-  defp do_parse(torrent) do
+  defp do_parse(torrent, info_hash_sha) do
     {_torrent, %Torrent{} = parsed} =
       {torrent, %Torrent{}}
-      |> parse_info_hash
+      |> parse_info_hash(info_hash_sha)
       |> parse_name
       |> parse_private
       |> parse_created_at
@@ -89,11 +90,9 @@ defmodule ParseTorrent do
     parsed
   end
 
-  defp parse_info_hash({torrent, %Torrent{} = parsed}) do
+  defp parse_info_hash({torrent, %Torrent{} = parsed}, info_hash_sha) do
     info_hash =
-      torrent["info"]
-      |> Bencode.encode!
-      |> sha1
+      info_hash_sha
       |> Base.encode16
       |> String.downcase
 
