@@ -12,10 +12,12 @@ Add parse_torrent to your list of dependencies in `mix.exs`:
 
 ## Usage
 `parse/1` will return a 2-tuple with `:ok` or return `:error` if torrent is invalid.
+
     data = File.read!("mypath/myfile.torrent")
     ParseTorrent.parse(data)
 
 `parse!/1` will return a map or raise if torrent is invalid.
+
     ParseTorrent.parse!(data)
 
 ## Credit
