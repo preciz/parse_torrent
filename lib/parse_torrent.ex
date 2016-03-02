@@ -48,7 +48,8 @@ defmodule ParseTorrent do
 
     torrent
     |> torrent_valid?
-    |> do_parse(info_hash_sha)
+    |> do_parse
+    |> parse_info_hash(info_hash_sha)
   end
 
   defp torrent_valid?(torrent) do
@@ -64,83 +65,76 @@ defmodule ParseTorrent do
   end
 
   defp has_key_or_raise!(torrent, key) do
-    Map.has_key?(torrent, key) ||
-      raise Error, missing_key: key
-
-    torrent
+    case Map.has_key?(torrent, key) do
+      true -> torrent
+      _ -> raise Error, missing_key: key
+    end
   end
 
-  defp do_parse(torrent, info_hash_sha) do
+  defp do_parse(torrent) do
     {_torrent, %Torrent{} = parsed} =
       {torrent, %Torrent{}}
-      |> parse_info_hash(info_hash_sha)
-      |> parse_name
-      |> parse_private
-      |> parse_created_at
-      |> parse_created_by
-      |> parse_comment
-      |> parse_announce
-      |> parse_url_list
-      |> parse_files
-      |> parse_length
-      |> parse_piece_length
-      |> parse_last_piece_length
-      |> parse_pieces
+      |> parse(:name, &parse_name/1)
+      |> parse(:private, &parse_private/1)
+      |> parse(:created_at, &parse_created_at/1)
+      |> parse(:created_by, &parse_created_by/1)
+      |> parse(:comment, &parse_comment/1)
+      |> parse(:announce, &parse_announce/1)
+      |> parse(:url_list, &parse_url_list/1)
+      |> parse(:files, &parse_files/1)
+      |> parse(:length, &parse_length/1)
+      |> parse(:piece_length, &parse_piece_length/1)
+      |> parse(:last_piece_length, &parse_last_piece_length/1)
+      |> parse(:pieces, &parse_pieces/1)
 
     parsed
   end
 
-  defp parse_info_hash({torrent, %Torrent{} = parsed}, info_hash_sha) do
+  defp parse({torrent, %Torrent{} = parsed}, key, func) do
+    parsed_value = func.({torrent, parsed})
+
+    {torrent, Map.put(parsed, key, parsed_value)}
+  end
+
+  defp parse_info_hash(%Torrent{} = parsed, info_hash_sha) do
     info_hash =
       info_hash_sha
       |> Base.encode16
       |> String.downcase
 
-    {torrent, %Torrent{parsed|info_hash: info_hash}}
+    %Torrent{parsed|info_hash: info_hash}
   end
 
-  defp parse_name({torrent, %Torrent{} = parsed}) do
-    name =
-      torrent["info"]["name.utf-8"] || torrent["info"]["name"]
-
-    {torrent, %Torrent{parsed|name: name}}
+  defp parse_name({torrent, _}) do
+    torrent["info"]["name.utf-8"] || torrent["info"]["name"]
   end
 
-  defp parse_private({torrent, %Torrent{} = parsed}) do
-    private = !!torrent["info"]["private"]
-
-    {torrent, %Torrent{parsed|private: private}}
+  defp parse_private({torrent, _}) do
+    !!torrent["info"]["private"]
   end
 
-  defp parse_created_at({torrent, %Torrent{} = parsed}) do
-    created_at =
-      case torrent["creation date"] do
-        nil ->
-          nil
-        _time ->
-          epoch = {{1970, 1, 1}, {0, 0, 0}} |> :calendar.datetime_to_gregorian_seconds
+  defp parse_created_at({torrent, _}) do
+    case torrent["creation date"] do
+      nil ->
+        nil
+      _time ->
+        epoch = {{1970, 1, 1}, {0, 0, 0}} |> :calendar.datetime_to_gregorian_seconds
 
-          torrent["creation date"]
-          |> +(epoch)
-          |> :calendar.gregorian_seconds_to_datetime
-      end
-
-    {torrent, %Torrent{parsed|created_at: created_at}}
+        torrent["creation date"]
+        |> +(epoch)
+        |> :calendar.gregorian_seconds_to_datetime
+    end
   end
 
-  defp parse_created_by({torrent, %Torrent{} = parsed}) do
-    created_by = torrent["created by"]
-
-    {torrent, %Torrent{parsed|created_by: created_by}}
+  defp parse_created_by({torrent, _parsed}) do
+    torrent["created by"]
   end
 
-  defp parse_comment({torrent, %Torrent{} = parsed}) do
-    comment = torrent["comment"]
-
-    {torrent, %Torrent{parsed|comment: comment}}
+  defp parse_comment({torrent, _parsed}) do
+    torrent["comment"]
   end
 
-  defp parse_announce({torrent, %Torrent{} = parsed}) do
+  defp parse_announce({torrent, _parsed}) do
     announce =
       cond do
         is_list(torrent["announce-list"]) ->
@@ -151,16 +145,12 @@ defmodule ParseTorrent do
           []
       end
 
-    announce = announce |> Enum.uniq
-
-    {torrent, %Torrent{parsed|announce: announce}}
+    announce |> Enum.uniq
   end
 
 
-  defp parse_url_list({torrent, %Torrent{} = parsed}) do
-    url_list = do_parse_url_list(torrent["url-list"])
-
-    {torrent, %Torrent{parsed|url_list: url_list}}
+  defp parse_url_list({torrent, _parsed}) do
+    do_parse_url_list(torrent["url-list"])
   end
 
   defp do_parse_url_list(nil), do: []
@@ -168,11 +158,8 @@ defmodule ParseTorrent do
   defp do_parse_url_list(list), do: Enum.uniq(list)
 
   defp parse_files({torrent, %Torrent{} = parsed}) do
-    files =
-      torrent["info"]["files"] || [torrent["info"]]
-      |> do_parse_files(parsed.name)
-
-    {torrent, %Torrent{parsed|files: files}}
+    torrent["info"]["files"] || [torrent["info"]]
+    |> do_parse_files(parsed.name)
   end
 
   defp do_parse_files(files, name) do
@@ -198,22 +185,17 @@ defmodule ParseTorrent do
     |> Enum.sum
   end
 
-  defp parse_length({torrent, %Torrent{} = parsed}) do
-    sum_length =
-      parsed.files
-      |> Enum.map(&(&1[:length]))
-      |> Enum.sum
-
-    {torrent, %Torrent{parsed|length: sum_length}}
+  defp parse_length({_torrent, %Torrent{} = parsed}) do
+    parsed.files
+    |> Enum.map(&(&1[:length]))
+    |> Enum.sum
   end
 
-  defp parse_piece_length({torrent, %Torrent{} = parsed}) do
-    piece_length = torrent["info"]["piece length"]
-
-    {torrent, %Torrent{parsed|piece_length: piece_length}}
+  defp parse_piece_length({torrent, _parsed}) do
+    torrent["info"]["piece length"]
   end
 
-  defp parse_last_piece_length({torrent, %Torrent{} = parsed}) do
+  defp parse_last_piece_length({_torrent, %Torrent{} = parsed}) do
     last_file =
       parsed.files
       |> List.last
@@ -223,24 +205,18 @@ defmodule ParseTorrent do
     rem_length =
       rem((last_file.offset + last_file.length), piece_length)
 
-    last_piece_length =
-      case rem_length do
-        0 -> piece_length
-        _ -> rem_length
-      end
-
-    {torrent, %Torrent{parsed|last_piece_length: last_piece_length}}
+    case rem_length do
+      0 -> piece_length
+      _ -> rem_length
+    end
   end
 
-  defp parse_pieces({torrent, %Torrent{} = parsed}) do
-    pieces =
-      torrent["info"]["pieces"]
-      |> Base.encode16
-      |> String.split("", trim: true)
-      |> Enum.chunk(40, 40, [])
-      |> Enum.map(&Enum.join/1)
-      |> Enum.map(&String.downcase/1)
-
-    {torrent, %Torrent{parsed|pieces: pieces}}
+  defp parse_pieces({torrent, _parsed}) do
+    torrent["info"]["pieces"]
+    |> Base.encode16
+    |> String.split("", trim: true)
+    |> Enum.chunk(40, 40, [])
+    |> Enum.map(&Enum.join/1)
+    |> Enum.map(&String.downcase/1)
   end
 end
