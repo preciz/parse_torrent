@@ -1,6 +1,10 @@
 defmodule ParseTorrent do
   alias ParseTorrent.Error
 
+  @moduledoc """
+  A module for convenient .torrent parsing
+  """
+
   defstruct(
     info_hash: nil,
     name: nil,
@@ -43,8 +47,7 @@ defmodule ParseTorrent do
   """
 
   def parse!(<<"d", _::binary>> = data) do
-    {torrent, info_hash_sha} =
-      data |> Bencode.decode_with_info_hash!
+    {torrent, info_hash_sha} = data |> Bencode.decode_with_info_hash!()
 
     torrent
     |> torrent_valid?
@@ -56,7 +59,8 @@ defmodule ParseTorrent do
     torrent
     |> has_key_or_raise!("info")
 
-    torrent |> Map.get("info")
+    torrent
+    |> Map.get("info")
     |> has_key_or_raise!("name")
     |> has_key_or_raise!("piece length")
     |> has_key_or_raise!("pieces")
@@ -99,10 +103,10 @@ defmodule ParseTorrent do
   defp parse_info_hash(%Torrent{} = parsed, info_hash_sha) do
     info_hash =
       info_hash_sha
-      |> Base.encode16
-      |> String.downcase
+      |> Base.encode16()
+      |> String.downcase()
 
-    %Torrent{parsed|info_hash: info_hash}
+    %Torrent{parsed | info_hash: info_hash}
   end
 
   defp parse_name({torrent, _}) do
@@ -117,12 +121,11 @@ defmodule ParseTorrent do
     case torrent["creation date"] do
       nil ->
         nil
-      _time ->
-        epoch = {{1970, 1, 1}, {0, 0, 0}} |> :calendar.datetime_to_gregorian_seconds
 
-        torrent["creation date"]
-        |> +(epoch)
-        |> :calendar.gregorian_seconds_to_datetime
+      _time ->
+        epoch = {{1970, 1, 1}, {0, 0, 0}} |> :calendar.datetime_to_gregorian_seconds()
+
+        (torrent["creation date"] + epoch) |> :calendar.gregorian_seconds_to_datetime()
     end
   end
 
@@ -139,15 +142,16 @@ defmodule ParseTorrent do
       cond do
         is_list(torrent["announce-list"]) ->
           List.flatten(torrent["announce-list"])
+
         torrent["announce"] ->
           [torrent["announce"]]
+
         true ->
           []
       end
 
-    announce |> Enum.uniq
+    announce |> Enum.uniq()
   end
-
 
   defp parse_url_list({torrent, _parsed}) do
     do_parse_url_list(torrent["url-list"])
@@ -158,15 +162,16 @@ defmodule ParseTorrent do
   defp do_parse_url_list(list), do: Enum.uniq(list)
 
   defp parse_files({torrent, %Torrent{} = parsed}) do
-    torrent["info"]["files"] || [torrent["info"]]
-    |> do_parse_files(parsed.name)
+    torrent["info"]["files"] ||
+      [torrent["info"]]
+      |> do_parse_files(parsed.name)
   end
 
   defp do_parse_files(files, name) do
     files
-    |> Enum.with_index
+    |> Enum.with_index()
     |> Enum.map(fn {file, i} ->
-      parts = [name| file["path.utf-8"] || file["path"] || []]
+      parts = [name | file["path.utf-8"] || file["path"] || []]
 
       %{
         path: Enum.reduce(parts, &(&2 <> "/" <> &1)),
@@ -178,17 +183,18 @@ defmodule ParseTorrent do
   end
 
   defp offset(_files, 0), do: 0
+
   defp offset(files, i) do
     files
-    |> Enum.slice(0..(i-1))
-    |> Enum.map(&(&1["length"]))
-    |> Enum.sum
+    |> Enum.slice(0..(i - 1))
+    |> Enum.map(& &1["length"])
+    |> Enum.sum()
   end
 
   defp parse_length({_torrent, %Torrent{} = parsed}) do
     parsed.files
-    |> Enum.map(&(&1[:length]))
-    |> Enum.sum
+    |> Enum.map(& &1[:length])
+    |> Enum.sum()
   end
 
   defp parse_piece_length({torrent, _parsed}) do
@@ -198,12 +204,11 @@ defmodule ParseTorrent do
   defp parse_last_piece_length({_torrent, %Torrent{} = parsed}) do
     last_file =
       parsed.files
-      |> List.last
+      |> List.last()
 
     piece_length = parsed.piece_length
 
-    rem_length =
-      rem((last_file.offset + last_file.length), piece_length)
+    rem_length = rem(last_file.offset + last_file.length, piece_length)
 
     case rem_length do
       0 -> piece_length
@@ -213,9 +218,9 @@ defmodule ParseTorrent do
 
   defp parse_pieces({torrent, _parsed}) do
     torrent["info"]["pieces"]
-    |> Base.encode16
+    |> Base.encode16()
     |> String.split("", trim: true)
-    |> Enum.chunk(40, 40, [])
+    |> Enum.chunk_every(40, 40, [])
     |> Enum.map(&Enum.join/1)
     |> Enum.map(&String.downcase/1)
   end
