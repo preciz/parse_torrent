@@ -11,7 +11,7 @@ defmodule ParseTorrent.Mixfile do
     [
       app: :parse_torrent,
       version: @version,
-      elixir: "~> 1.4",
+      elixir: "~> 1.7",
       description: @description,
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
