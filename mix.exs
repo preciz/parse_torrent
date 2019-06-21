@@ -5,7 +5,7 @@ defmodule ParseTorrent.Mixfile do
     Parses a .torrent file and returns a map
   """
 
-  @version "0.3.0"
+  @version "0.3.1"
 
   def project do
     [
