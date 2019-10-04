@@ -26,8 +26,8 @@ defmodule ParseTorrent do
   @doc """
     Parses a torrent binary and returns a map.
 
-    Usage:
-    ParseTorrent.parse(data)
+    ## Example:
+        ParseTorrent.parse(data)
   """
 
   def parse(data) do
@@ -42,8 +42,8 @@ defmodule ParseTorrent do
     Parses a torrent binary and returns a map.
     Will raise if binary is invalid.
 
-    Usage:
-    ParseTorrent.parse!(data)
+    ## Example:
+        ParseTorrent.parse!(data)
   """
 
   def parse!(<<"d", _::binary>> = data) do
