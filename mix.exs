@@ -6,6 +6,7 @@ defmodule ParseTorrent.Mixfile do
   """
 
   @version "0.3.1"
+  @github "https://github.com/preciz/parse_torrent"
 
   def project do
     [
@@ -16,11 +17,9 @@ defmodule ParseTorrent.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-
       name: "ParseTorrent",
       docs: docs(),
-
-      package: package(),
+      package: package()
     ]
   end
 
@@ -39,7 +38,7 @@ defmodule ParseTorrent.Mixfile do
     [
       maintainers: ["Barna Kovacs"],
       licenses: ["UNLICENSE"],
-      links: %{"GitHub" => "https://github.com/preciz/parse_torrent"}
+      links: %{"GitHub" => @github}
     ]
   end
 
@@ -47,7 +46,7 @@ defmodule ParseTorrent.Mixfile do
     [
       main: "ParseTorrent",
       source_ref: "v#{@version}",
-      source_url: "https://github.com/preciz/parse_torrent",
+      source_url: @github
     ]
   end
 end
