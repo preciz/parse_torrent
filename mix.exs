@@ -2,7 +2,7 @@ defmodule ParseTorrent.Mixfile do
   use Mix.Project
 
   @description """
-    Parses a .torrent file and returns a map
+  A module for convenient .torrent parsing
   """
 
   @version "0.3.1"
