@@ -27,9 +27,11 @@ defmodule ParseTorrent do
     Parses a torrent binary and returns a map.
 
     ## Example:
-        ParseTorrent.parse(data)
+        data = File.read!("test/torrents/leaves.torrent")
+        {:ok, torrent_map} = ParseTorrent.parse(data)
   """
 
+  @spec parse(binary) :: {:ok, map} | :error
   def parse(data) do
     try do
       {:ok, parse!(data)}
@@ -43,9 +45,11 @@ defmodule ParseTorrent do
     Will raise if binary is invalid.
 
     ## Example:
-        ParseTorrent.parse!(data)
+        data = File.read!("test/torrents/leaves.torrent")
+        torrent_map = ParseTorrent.parse!(data)
   """
 
+  @spec parse!(binary) :: map | no_return
   def parse!(<<"d", _::binary>> = data) do
     {torrent, info_hash_sha} = data |> Bencode.decode_with_info_hash!()
 
