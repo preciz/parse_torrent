@@ -34,4 +34,5 @@ ParseTorrent.parse!(data)
 Based on [parse-torrent-file](https://github.com/feross/parse-torrent-file) by [feross](https://github.com/feross).
 
 ## License
-ParseTorrent is released into the public domain (see `UNLICENSE`).
+
+ParseTorrent is [MIT licensed](LICENSE).

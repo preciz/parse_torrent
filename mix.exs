@@ -37,7 +37,7 @@ defmodule ParseTorrent.Mixfile do
   defp package do
     [
       maintainers: ["Barna Kovacs"],
-      licenses: ["UNLICENSE"],
+      licenses: ["MIT"],
       links: %{"GitHub" => @github}
     ]
   end
