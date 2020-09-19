@@ -1,8 +1,6 @@
 defmodule ParseTorrent do
-  alias ParseTorrent.Error
-
   @moduledoc """
-  A module for convenient .torrent parsing
+  A module for convenient .torrent parsing.
   """
 
   defstruct(
@@ -21,14 +19,17 @@ defmodule ParseTorrent do
     pieces: []
   )
 
+  alias ParseTorrent.Error
   alias ParseTorrent, as: Torrent
 
   @doc """
-    Parses a torrent binary and returns a map.
+  Parses a torrent binary and returns a map.
 
-    ## Example:
-        data = File.read!("test/torrents/leaves.torrent")
-        {:ok, torrent_map} = ParseTorrent.parse(data)
+  ## Examples
+
+      data = File.read!("test/torrents/leaves.torrent")
+      {:ok, torrent_map} = ParseTorrent.parse(data)
+
   """
 
   @spec parse(binary) :: {:ok, map} | :error
@@ -41,12 +42,13 @@ defmodule ParseTorrent do
   end
 
   @doc """
-    Parses a torrent binary and returns a map.
-    Will raise if binary is invalid.
+  Parses a torrent binary and returns a map. Will raise if binary is invalid.
 
-    ## Example:
-        data = File.read!("test/torrents/leaves.torrent")
-        torrent_map = ParseTorrent.parse!(data)
+  ## Examples
+
+      data = File.read!("test/torrents/leaves.torrent")
+      torrent_map = ParseTorrent.parse!(data)
+
   """
 
   @spec parse!(binary) :: map | no_return
