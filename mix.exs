@@ -5,7 +5,7 @@ defmodule ParseTorrent.Mixfile do
   A module for convenient .torrent parsing
   """
 
-  @version "0.3.1"
+  @version "0.3.2"
   @github "https://github.com/preciz/parse_torrent"
 
   def project do
