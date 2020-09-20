@@ -19,8 +19,8 @@ defmodule ParseTorrent do
     pieces: []
   )
 
-  alias ParseTorrent.Error
   alias ParseTorrent, as: Torrent
+  alias ParseTorrent.Error
 
   @doc """
   Parses a torrent binary and returns a map.
