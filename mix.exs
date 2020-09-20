@@ -30,6 +30,7 @@ defmodule ParseTorrent.Mixfile do
   defp deps do
     [
       {:bencode, "0.3.2"},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.22.2", only: :dev, runtime: false}
     ]
   end
