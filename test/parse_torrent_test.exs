@@ -43,17 +43,17 @@ defmodule ParseTorrentTest do
       created_by: nil,
       files: [
         %{
-          length: 19211729,
+          length: 19_211_729,
           name: "bl001-introduction.webm",
           offset: 0,
           path: "bl001-introduction.webm"
         }
       ],
       info_hash: "4cb67059ed6bd08362da625b3ae77f6f4a075705",
-      last_piece_length: 337361,
-      length: 19211729,
+      last_piece_length: 337_361,
+      length: 19_211_729,
       name: "bl001-introduction.webm",
-      piece_length: 1048576,
+      piece_length: 1_048_576,
       pieces: [
         "90a75dcd4e88d287c7ac5599c108f6036c13c4ce",
         "1ef5468bdff9a4466ad4e446477981cb67d07933",
@@ -119,12 +119,12 @@ defmodule ParseTorrentTest do
         %{
           path: "Leaves of Grass by Walt Whitman.epub",
           name: "Leaves of Grass by Walt Whitman.epub",
-          length: 362017,
+          length: 362_017,
           offset: 0
         }
       ],
-      length: 362017,
-      piece_length: 16384,
+      length: 362_017,
+      piece_length: 16_384,
       last_piece_length: 1569,
       pieces: [
         "1f9c3f59beec079715ec53324bde8569e4a0b4eb",
