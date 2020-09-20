@@ -102,7 +102,7 @@ defmodule ParseTorrentTest do
     torrent = File.read!("test/torrents/leaves-url-list.torrent")
     |> ParseTorrent.parse!
 
-    assert torrent.url_list == [ "http://www2.hn.psu.edu/faculty/jmanis/whitman/leaves-of-grass6x9.pdf" ]
+    assert torrent.url_list == ["http://www2.hn.psu.edu/faculty/jmanis/whitman/leaves-of-grass6x9.pdf"]
   end
 
   test "parses single file torrent" do
