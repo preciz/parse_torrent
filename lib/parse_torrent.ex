@@ -34,11 +34,9 @@ defmodule ParseTorrent do
 
   @spec parse(binary) :: {:ok, map} | :error
   def parse(data) do
-    try do
-      {:ok, parse!(data)}
+    {:ok, parse!(data)}
     rescue
       _e -> :error
-    end
   end
 
   @doc """
