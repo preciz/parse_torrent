@@ -19,8 +19,8 @@ defmodule ParseTorrent do
     pieces: []
   )
 
-  alias ParseTorrent.Error
   alias ParseTorrent, as: Torrent
+  alias ParseTorrent.Error
 
   @doc """
   Parses a torrent binary and returns a map.
@@ -34,11 +34,9 @@ defmodule ParseTorrent do
 
   @spec parse(binary) :: {:ok, map} | :error
   def parse(data) do
-    try do
-      {:ok, parse!(data)}
+    {:ok, parse!(data)}
     rescue
       _e -> :error
-    end
   end
 
   @doc """
