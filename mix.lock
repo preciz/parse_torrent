@@ -2,7 +2,7 @@
   "bencode": {:hex, :bencode, "0.3.2", "1dece23710b54ef984852aa6abffac982e033eaaee8d57b6a6894ee8ddbd0c84", [:mix], [{:eqc_ex, "~> 1.2.4", [hex: :eqc_ex, repo: "hexpm", optional: false]}], "hexpm", "6abf5adace62d6e105b17d50faa8bdce84dea18c947ecb0bb81b6b2a3582dae7"},
   "bencodex": {:hex, :bencodex, "1.0.0"},
   "bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], [], "hexpm", "7af5c7e09fe1d40f76c8e4f9dd2be7cebd83909f31fee7cd0e9eadc567da8353"},
-  "credo": {:hex, :credo, "1.4.0", "92339d4cbadd1e88b5ee43d427b639b68a11071b6f73854e33638e30a0ea11f5", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}, {:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "1fd3b70dce216574ce3c18bdf510b57e7c4c85c2ec9cad4bff854abaf7e58658"},
+  "credo": {:hex, :credo, "1.4.1", "16392f1edd2cdb1de9fe4004f5ab0ae612c92e230433968eab00aafd976282fc", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, repo: "hexpm", optional: false]}, {:jason, "~> 1.0", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "155f8a2989ad77504de5d8291fa0d41320fdcaa6a1030472e9967f285f8c7692"},
   "earmark": {:hex, :earmark, "1.3.2", "b840562ea3d67795ffbb5bd88940b1bed0ed9fa32834915125ea7d02e35888a5", [:mix], [], "hexpm"},
   "earmark_parser": {:hex, :earmark_parser, "1.4.10", "6603d7a603b9c18d3d20db69921527f82ef09990885ed7525003c7fe7dc86c56", [:mix], [], "hexpm", "8e2d5370b732385db2c9b22215c3f59c84ac7dda7ed7e544d7c459496ae519c0"},
   "eqc_ex": {:hex, :eqc_ex, "1.2.4", "c169c4025e6f59d95977b1d5f3846cd964e996449755d7e9bf6ac6d3a4520839", [:mix], [], "hexpm", "2d2895bedf784ffaf11144d25e6ca11a4cfff5b73c35ec6bedd3c5ec5cabc5e9"},
